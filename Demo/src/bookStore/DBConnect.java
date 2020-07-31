@@ -10,7 +10,6 @@ public class DBConnect {
     private  static String UNAME="root";
     private  static String PASS="";
     static Connection con;
-
     public static PreparedStatement getPreparedStatement(String sql) throws ClassNotFoundException, SQLException {
         if (con==null||con.isClosed()){
             Class.forName("com.mysql.jdbc.Driver");
