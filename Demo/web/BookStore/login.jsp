@@ -45,12 +45,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- //animation-effect -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
-<%--<%--%>
-<%--    String erremail = (String) request.getAttribute("erremail");--%>
-<%--    String errpass = (String) request.getAttribute("errpass");--%>
-<%--    String errCaptcha = (String) request.getAttribute("errCaptcha");--%>
-<%--    String email = (String) request.getAttribute("email");--%>
-<%--%>--%>
+
 <body>
 <!-- header -->
 <jsp:include page="./header.jsp"/>
@@ -70,41 +65,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<div class="container">
 			<h3 class="animated wow zoomIn" data-wow-delay=".5s">Login Form</h3>
 			<div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
-				<form action="http://localhost:8080/Demo/bookStoredoLogin" method="post">
-<%--                    3.người dùng nhập thông tin đăng nhập gồm email,pass--%>
-<%--                    <div class="alert-danger">--%>
-<%--                        <%=erremail == null ? "" : erremail%>--%>
-<%--                    </div>--%>
+				<form>
 					<input type="text" name="email" id="inputEmail" placeholder="email   Vd: abc@gmail.com" required=" " >
-<%--                    <div class="alert-danger">--%>
-<%--                        <%=errpass == null ? "" : errpass%>--%>
-<%--                    </div>--%>
 					<input type="password" name="pass" placeholder="Password    vd:Abc123@" required=" " >
 					<div class="forgot">
-<%--                        1.Người dùng chọn chức năng quên mật khẩu--%>
-<%--                        2.hệ thông hiển thị trang quên mật khẩu --%>
 						<a href="ForgotPassword.jsp">Forgot Password?</a>
 					</div>
-<%--                    <%if(email!=null||errpass!=null){%>--%>
-<%--                    <div class="alert-danger">--%>
-<%--                        <%=errCaptcha == null ? "" : errCaptcha%>--%>
-<%--                    </div>--%>
                     <div class="g-recaptcha" data-sitekey="6LdWoLUZAAAAAAhlHiiU9xopfxKkKy9AVCn-ZS0E"></div><input name="captcha" value="capcha" type="hidden">
-<%--                    <%}%>--%>
 					<input type="submit" value="Login">
 				</form>
-<%--                <script src='https://www.google.com/recaptcha/api.js'></script>--%>
-<!--				<h6 class="animated wow slideInUp" data-wow-delay=".5s">Or</h6>-->
 				<div class="animated wow slideInUp" data-wow-delay=".5s" style="padding-left: 5%;margin-top: 5%">
-<%--                    <div class="social-login">--%>
-<%--                        <a class=" facebook-btn social-btn" type="button" style=" font-weight: 100;background-color: #3C589C;color:white; width:49%;font-size: 0.9rem;"><span><i class="fab fa-facebook-f"></i> Sign in with Facebook</span> </a>--%>
-<%--                        <a class="btn google-btn social-btn" type="button" style=" font-weight: 100;background-color: #DF4B3B;color:white; width:49%;font-size: 0.9rem;"><span><i class="fab fa-google-plus-g"></i> Sign in with Google+</span> </a>--%>
-<%--                    </div>--%>
-<%--                    chuyển hướng người dùng tới trang của google--%>
-					<a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/Demo/login-google&response_type=code
-    &client_id=70223336740-nq2j8gon65t5um0nbb5gpkt1g85a18ff.apps.googleusercontent.com"><img src="img/google_signin_dark.png" width="40%"/> </a></a>
+					<a ><img src="img/google_signin_dark.png" width="40%"/> </a></a>
 <%--                    chuyển hướng người dùng tới trang của facebook--%>
-					<a href="https://www.facebook.com/dialog/oauth?client_id=2701399640096635&redirect_uri=http://localhost:8080/Demo/login-facebook"><img src="img/facebook_signin_dark.png" width="55%" /></a>
+					<a><img src="img/facebook_signin_dark.png" width="55%" /></a>
 				</div>
 			</div>
 			<h4 class="animated wow slideInUp" data-wow-delay=".5s">For New People</h4>
