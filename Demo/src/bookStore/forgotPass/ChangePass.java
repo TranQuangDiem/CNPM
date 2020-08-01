@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.regex.Pattern;
 
 @WebServlet("/BookStoreChangePass")
@@ -32,16 +33,21 @@ public class ChangePass extends HttpServlet {
         String errmatkhau = "";
         String errmatkhaucon = "";
         String errmail = "";
-        String errmaxacnhan = "";
+        String errmaxacthuc = "";
 
             boolean checkMatKhau = false;
             boolean checkMatKhauCon = false;
             boolean checkMail = false;
             boolean checkMaxacnhan = false;
+            long millis = System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(millis);
+            java.sql.Time time = new Time(millis);
             //truy xuất database
-            String sql = "SELECT forgotpass.id FROM forgotpass WHERE id =?";
+            String sql = "SELECT user.maxacthuc FROM user WHERE maxacthuc=? and (?-ngaytao<1) and (?-gio< 30)";
             PreparedStatement s = DBConnect.getPreparedStatement(sql);
             s.setString(1,maxacthuc);
+            s.setDate(2,date);
+            s.setTime(3,time);
             ResultSet rs = s.executeQuery();
             boolean exit = rs.next();
 
@@ -52,8 +58,8 @@ public class ChangePass extends HttpServlet {
             paPass.matcher(pass).matches();
             paMail.matcher(email).matches();
             //kiểm tra pas có hợp lệ không
-            if (pass.length() < 8) {
-                errmatkhau = "Mật khẩu phải hơn 8 ký tự";
+            if (pass.length() < 8|| pass.length()>25) {
+                errmatkhau = "Mật khẩu phải hơn 8 và nhỏ hơn 25 ký tự";
             } else if (paPass.matcher(pass).matches() == false) {
                 errmatkhau = "Phải có ít nhật 1 ký tự thường,hoa,số,ký tự đặc biệt";
             } else {
@@ -76,18 +82,19 @@ public class ChangePass extends HttpServlet {
             }
             //kiểm tra mã xác thực có đúng không
             if (exit==false){
-                errmaxacnhan="Mã xác thực sai";
+                errmaxacthuc="Mã xác thực sai";
             }else {
-                errmaxacnhan="";
+                errmaxacthuc="";
                 checkMaxacnhan=true;
             }
             request.setAttribute("errmatkhau", errmatkhau);
             request.setAttribute("errmatkhaucon", errmatkhaucon);
             request.setAttribute("errmail", errmail);
-            request.setAttribute("errmaxacnhan", errmaxacnhan);
+            request.setAttribute("errmaxacnhan", errmaxacthuc);
             request.setAttribute("email",email);
             //nếu tất cả thông tin nhập vào đều hợp lệ
             if (checkMail==true&&checkMatKhau==true&&checkMatKhauCon==true&&checkMaxacnhan==true){
+
                 //thì lưu pass mới vào database
                 String query = "UPDATE `user` SET `user`.pass=? WHERE `user`.email=?";
                 PreparedStatement ps = DBConnect.getPreparedStatement(query);
