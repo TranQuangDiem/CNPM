@@ -11,6 +11,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
     function hideURLbar(){ window.scrollTo(0,1); } </script>
     <!-- //for-mobile-apps -->
+    <%--<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />--%>
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/all.css" rel="stylesheet" type="text/css" media="all" />
     <link href="BookStore/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
@@ -72,6 +73,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <h3 class="animated wow zoomIn" data-wow-delay=".5s">changePass</h3>
         <div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
             <form action="http://localhost:8080/Demo/BookStoreChangePass" method="post">
+<%--                11.Người dùng, quản lý, quản trị viên nhập email,pass,nhập lại pass,mã xác thực.--%>
                 <div class="alert-danger">
                     <%=erremail == null ? "" : erremail%>
                 </div>
