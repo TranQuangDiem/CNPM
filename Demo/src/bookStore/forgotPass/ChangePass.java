@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.regex.Pattern;
 
 @WebServlet("/BookStoreChangePass")
@@ -24,7 +23,7 @@ public class ChangePass extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
         try {
-            //lấy thông tin người dùng nhập vào gồm email,pass,pass nhập lại,mã xác thực
+            //12.Hệ thống lấy thông tin nhập vào: email,pass,nhập lại pass,mã xác thực.
         String email = request.getParameter("email") == null ? "" : request.getParameter("email").trim();
         String pass = request.getParameter("pass") == null ? "" : request.getParameter("pass").trim();
         String repass = request.getParameter("repass") == null ? "" : request.getParameter("repass").trim();
@@ -39,25 +38,21 @@ public class ChangePass extends HttpServlet {
             boolean checkMatKhauCon = false;
             boolean checkMail = false;
             boolean checkMaxacnhan = false;
-            long millis = System.currentTimeMillis();
-            java.sql.Date date = new java.sql.Date(millis);
-            java.sql.Time time = new Time(millis);
-            //truy xuất database
-            String sql = "SELECT user.maxacthuc FROM user WHERE maxacthuc=? and (?-ngaytao<1) and (?-gio< 30)";
-            PreparedStatement s = DBConnect.getPreparedStatement(sql);
-            s.setString(1,maxacthuc);
-            s.setDate(2,date);
-            s.setTime(3,time);
-            ResultSet rs = s.executeQuery();
-            boolean exit = rs.next();
-
             String regexPass = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}";
             String regexMail = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
             Pattern paPass = Pattern.compile(regexPass);
             Pattern paMail = Pattern.compile(regexMail);
             paPass.matcher(pass).matches();
             paMail.matcher(email).matches();
-            //kiểm tra pas có hợp lệ không
+            String sql = "SELECT * FROM user WHERE maxacthuc=? and LOCALTIMESTAMP-ngaytao<1800";
+            //13.Hệ thống truy xuất xuông  database
+            PreparedStatement s = DBConnect.getPreparedStatement(sql);
+            s.setString(1,maxacthuc);
+            //14. database trả về kết quả
+            ResultSet rs = s.executeQuery();
+            boolean exist = rs.next();
+
+            //kiểm tra new password có hợp lệ không
             if (pass.length() < 8|| pass.length()>25) {
                 errmatkhau = "Mật khẩu phải hơn 8 và nhỏ hơn 25 ký tự";
             } else if (paPass.matcher(pass).matches() == false) {
@@ -66,45 +61,59 @@ public class ChangePass extends HttpServlet {
                 errmatkhau = "";
                 checkMatKhau = true;
             }
-            //kiểm tra pass có trùng khớp với pass nhập lại không
-            if (pass.equals(repass) == false) {
+            //kiểm tra new password có trùng khớp với enter a new password không
+            if (!pass.equals(repass)) {
                 errmatkhaucon = "Mật khẩu không trùng khớp";
             } else {
                 errmatkhaucon = "";
                 checkMatKhauCon = true;
             }
             //kiểm tra email có hợp lệ không
+            if (paMail.matcher(email).matches() == true) {
+                String sql1 = "SELECT* FROM user WHERE email =? ";
+                PreparedStatement s1 = DBConnect.getPreparedStatement(sql1);
+                s1.setString(1, email);
+                ResultSet rs1 = s1.executeQuery();
+                boolean existmail = rs1.next();
+
             if (paMail.matcher(email).matches() == false) {
                 errmail = "Email của bạn không hợp lê";
-            } else {
-                errmail = "";
-                checkMail = true;
-            }
-            //kiểm tra mã xác thực có đúng không
-            if (exit==false){
-                errmaxacthuc="Mã xác thực sai";
+            } else if(existmail==false) {
+                errmail ="Bạn nhập sai Email";
             }else {
-                errmaxacthuc="";
-                checkMaxacnhan=true;
+                    checkMail = true;
+                }
+                //kiểm tra mã xác thực có đúng không
+            if(!maxacthuc.equals(rs1.getString("maxacthuc"))){
+                    errmaxacthuc="Mã xác thực sai";
+            }else  if (exist==false){
+                    errmaxacthuc="Mã xác thực đã hết hạn";
+            }else {
+                    checkMaxacnhan=true;
             }
+            }else {
+                errmail= "email không hợp lệ";
+            }
+
+
             request.setAttribute("errmatkhau", errmatkhau);
             request.setAttribute("errmatkhaucon", errmatkhaucon);
             request.setAttribute("errmail", errmail);
             request.setAttribute("errmaxacnhan", errmaxacthuc);
             request.setAttribute("email",email);
-            //nếu tất cả thông tin nhập vào đều hợp lệ
+            //15. Hệ thống kiểm tra email, new password,enter a new password , verification code hợp lệ
             if (checkMail==true&&checkMatKhau==true&&checkMatKhauCon==true&&checkMaxacnhan==true){
 
-                //thì lưu pass mới vào database
+                //16.Hệ thống update lại pass mới vào trong database
                 String query = "UPDATE `user` SET `user`.pass=? WHERE `user`.email=?";
                 PreparedStatement ps = DBConnect.getPreparedStatement(query);
                 ps.setString(1,pass);
                 ps.setString(2,email);
                 ps.executeUpdate();
-                //hiển thị trang đăng nhập
+                //17. Hệ thống chuyển sang trang login
                 response.sendRedirect("BookStore/login.jsp");
-            }else {//nếu thông tin nhập vào không hợp lệ
-                //hiển thị thông báo lỗi
+            }else {//15.1. Hệ thống kiểm tra email, new password,enter a new password, verification code không hợp lệ
+                //16.1 Hệ thống hiển thị  lỗi ở trang changePass.
                 request.getRequestDispatcher("BookStore/changePass.jsp").forward(request, response);
             }
         } catch (SQLException e) {
