@@ -74,7 +74,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="alert-danger">
                     <%=erremail == null ? "" : erremail%>
                 </div>
-<%--                3.người dùng nhập email của tài khoản để lấy mã xác nhận--%>
+<%--                3.người dùng nhập email của tài khoản để lấy mã xác thực--%>
                 <input type="text" name="email" id="inputEmail" placeholder="email   Vd: abc@gmail.com" required=" " value=<%=email==null?"":email%> >
                 <input type="submit" value="send">
             </form>
@@ -171,5 +171,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
     </div>
 </div>
+<!-- //footer -->
 </body>
 </html>
