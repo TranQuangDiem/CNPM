@@ -8,12 +8,11 @@ import java.util.Date;
 import java.util.Properties;
 
 public class SendMail {
-  public static int code;
-    public static void sendEmail(String host, String port,
-                                 String userName,  String password, String toAddress,String message) throws AddressException,
-            MessagingException {
+    public static int code;
+    //9. hệ thống gửi mã xác thực về mail người dùng
+    public static void sendEmail(String host, String port, String userName,  String password, String toAddress,String message) throws AddressException,MessagingException {
 
-        // cấu hình SMTP server properties
+        // sets SMTP server properties
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
@@ -37,7 +36,7 @@ public class SendMail {
         msg.setFrom(new InternetAddress(userName));
         InternetAddress[] toAddresses = {new InternetAddress(toAddress)};
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
-        String sub = "Bạn muốn đổi mật khẩu ? ";
+        String sub = "You have forgotten your password ? ";
         code = (int) Math.floor(((Math.random() * 899999) + 10000000));
         msg.setSubject(sub);
         msg.setSentDate(new Date());
