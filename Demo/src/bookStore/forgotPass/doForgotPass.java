@@ -80,9 +80,10 @@ public class doForgotPass extends HttpServlet {
                 psUpdateforgot.setInt(1, code);
                 psUpdateforgot.setString(2,email);
                 psUpdateforgot.executeUpdate();
+		String sub = "You have forgotten your password ? ";
                 String mess = "access link http://localhost:8080/Demo/BookStore/changePass.jsp" + System.lineSeparator() +"Your authentication code is: " + code + System.lineSeparator() + "Validation codes are valid for 30 minutes from now";
                 //8. Hệ thống gửi mã xác thực về email người dùng nhập
-                SendMail.sendEmail(host, port, user, pass, email, mess);
+                SendMail.sendEmail(host, port, user, pass, email, mess, sub);
                 //10.Hệ thống hiển thị trang changePass
                 response.sendRedirect("BookStore/changePass.jsp");
 

@@ -10,7 +10,7 @@ import java.util.Properties;
 public class SendMail {
     public static int code;
     //9. hệ thống gửi mã xác thực về mail người dùng
-    public static void sendEmail(String host, String port, String userName,  String password, String toAddress,String message) throws AddressException,MessagingException {
+    public static void sendEmail(String host, String port, String userName,  String password, String toAddress, String message, String subject) throws AddressException,MessagingException {
 
         // sets SMTP server properties
         Properties properties = new Properties();
@@ -36,9 +36,8 @@ public class SendMail {
         msg.setFrom(new InternetAddress(userName));
         InternetAddress[] toAddresses = {new InternetAddress(toAddress)};
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
-        String sub = "You have forgotten your password ? ";
         code = (int) Math.floor(((Math.random() * 899999) + 10000000));
-        msg.setSubject(sub);
+        msg.setSubject(subject);
         msg.setSentDate(new Date());
         msg.setText(message);
 
