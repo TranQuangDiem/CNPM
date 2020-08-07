@@ -1,4 +1,4 @@
-<%@ page import="bookStore.User" %>
+<%@ page import="bookStore.model.User" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,29 +62,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="header-grid-right animated wow slideInRight" data-wow-delay=".5s">
                 <ul class="login-register">
-                    <%
-                        String name = (String) session.getAttribute("name");
-                        if (session.getAttribute("Auth") != null||name!= null) {
-                            User u = (User) session.getAttribute("Auth");
-
-                    %>
-                    <li><i class="glyphicon glyphicon-user" aria-hidden="true"></i><a href="login.jsp"><%=u.name==null?"":u.name%><%=name==null?"":name%></a></li>
-                    <li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="http://localhost:8080/Demo/BookStoreLogOut">LogOut</a></li>
-                    <%}else {%>
-<%--                    1.Nguời dùng chọn chức năng login (đăng nhập)--%>
-<%--                    2.chuyển sang trang login (đăng nhập)--%>
-                    <li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="login.jsp">Login</a></li>
-<%--                    chuyển sang trang register--%>
-                    <li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="register.jsp">Register</a>
+                    <li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="#">Login</a></li>
+<%--1. Người dùng chọn chức năng đăng nhập--%>
+                    <li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="http://localhost:8080/Demo/register">Register</a>
                     </li>
-                    <%}%>
                 </ul>
             </div>
             <div class="clearfix"></div>
         </div>
         <div class="logo-nav">
             <div class="logo-nav-left animated wow zoomIn" data-wow-delay=".5s">
-                <h1><a href="index.jsp">Best Store <span>Shop anywhere</span></a></h1>
+                <h1><a href="#">Best Store <span>Shop anywhere</span></a></h1>
             </div>
             <div class="logo-nav-left1">
                 <nav class="navbar navbar-default">
@@ -110,17 +98,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                         <div class="col-sm-6">
                                             <ul class="multi-column-dropdown">
                                                 <h6>Books</h6>
-                                                <li><a href="products.html">Children's</a></li>
-                                                <li><a href="products.html">Comics</a></li>
-                                                <li><a href="products.html">History</a></li>
-                                                <li><a href="products.html">Humor and Comedy</a></li>
+                                                <li><a href="#">Children's</a></li>
+                                                <li><a href="#">Comics</a></li>
+                                                <li><a href="#">History</a></li>
+                                                <li><a href="#">Humor and Comedy</a></li>
                                             </ul>
                                         </div>
                                         <div class="col-sm-6">
                                             <ul class="multi-column-dropdown">
                                                 <h6>Charts</h6>
-                                                <li><a href="products.html">Best seller</a></li>
-                                                <li><a href="products.html">New books</a></li>
+                                                <li><a href="#">Best seller</a></li>
+                                                <li><a href="#">New books</a></li>
                                             </ul>
                                         </div>
                                         <div class="clearfix"></div>
