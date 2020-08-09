@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 
-@WebServlet("/BookStoredoForgotPass")
+@WebServlet({"/BookStoredoForgotPass"})
 public class doForgotPass extends HttpServlet {
 
     private String host;
@@ -48,8 +48,8 @@ public class doForgotPass extends HttpServlet {
             Pattern paMail = Pattern.compile(regexMail);
             boolean checkMail = false;
             if (paMail.matcher(email).matches() == true) {
+		    //5. hệ thống truy xuất đến database user
                 String sqlcheckExitsMail = "SELECT `user`.email FROM `user` WHERE email=?";
-                //5. hệ thống truy xuất đến database user
                 PreparedStatement psMail = DBConnect.getPreparedStatement(sqlcheckExitsMail);
                 psMail.setString(1, email);
                 //6. database user trả về kết quả
@@ -74,17 +74,33 @@ public class doForgotPass extends HttpServlet {
             }
             //7. Hệ thống kiểm tra email hợp lệ
             if (checkMail == true) {//Nếu email đã được đăng ký trong tài khoản
-                //lưu lại mã xác thưc ,ngày, giờ của email xuống database
-                String sqlUpdateforgot = "UPDATE test.user SET user.maxacthuc=?, user.ngaytao=LOCALTIMESTAMP WHERE user.email=?";
-                PreparedStatement psUpdateforgot = DBConnect.getPreparedStatement(sqlUpdateforgot);
-                psUpdateforgot.setInt(1, code);
-                psUpdateforgot.setString(2,email);
-                psUpdateforgot.executeUpdate();
-		String sub = "You have forgotten your password ? ";
-                String mess = "access link http://localhost:8080/Demo/BookStore/changePass.jsp" + System.lineSeparator() +"Your authentication code is: " + code + System.lineSeparator() + "Validation codes are valid for 30 minutes from now";
-                //8. Hệ thống gửi mã xác thực về email người dùng nhập
-                SendMail.sendEmail(host, port, user, pass, email, mess, sub);
-                //10.Hệ thống hiển thị trang changePass
+                //kiểm tra email có trong database forgotpass chưa
+                String sqlCheckForgot = "SELECT forgotpass.email FROM forgotpass WHERE email=?";
+                PreparedStatement psCheckForgot = DBConnect.getPreparedStatement(sqlCheckForgot);
+                psCheckForgot.setString(1, email);
+                ResultSet rsCheckForgot = psCheckForgot.executeQuery();
+                boolean checkForgot = rsCheckForgot.next();
+                if (checkForgot == false) {//email không có trong database forgotpass
+                    //thêm email vào database với mã xác thực,ngày được tạo
+                    String sqlUpdateforgot = "INSERT INTO forgotpass(maxacthuc,email,ngaytao,trangthai) VALUES(?,?,LOCALTIMESTAMP,1)";
+                    PreparedStatement psUpdateforgot = DBConnect.getPreparedStatement(sqlUpdateforgot);
+                    psUpdateforgot.setInt(1, code);
+                    psUpdateforgot.setString(2, email);
+                    psUpdateforgot.executeUpdate();
+                    String mess = "access link http://localhost:8080/Demo/BookStore/changePass.jsp" + System.lineSeparator() +"Your authentication code is: " + code + System.lineSeparator() + "Validation codes are valid for 30 minutes from now";
+                    //8. Hệ thống gửi mã xác thực về email người dùng nhập
+                    SendMail.sendEmail(host, port, user, pass, email, mess);
+                }else if (checkForgot == true) {//email người dùng đã có trong database forgotpass
+                    //update lại thông tin email đó
+                    String sqlUpdateforgot = "UPDATE test.forgotpass SET forgotpass.maxacthuc=?, forgotpass.ngaytao=LOCALTIMESTAMP ,trangthai=1 WHERE forgotpass.email=?";
+                    PreparedStatement psUpdateforgot = DBConnect.getPreparedStatement(sqlUpdateforgot);
+                    psUpdateforgot.setInt(1, code);
+                    psUpdateforgot.setString(2, email);
+                    psUpdateforgot.executeUpdate();
+                    String mess = "access link http://localhost:8080/Demo/BookStore/changePass.jsp" + System.lineSeparator() +"Your authentication code is: " + code + System.lineSeparator() + "Validation codes are valid for 30 minutes from now";
+                    //8. Hệ thống gửi mã xác thực về email người dùng nhập
+                    SendMail.sendEmail(host, port, user, pass, email, mess);
+                }
                 response.sendRedirect("BookStore/changePass.jsp");
 
             }else {//8.1. Hệ thống hiển thị lỗi ở trang forgotPassword.
