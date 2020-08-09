@@ -44,7 +44,7 @@ public class ChangePass extends HttpServlet {
             Pattern paMail = Pattern.compile(regexMail);
             paPass.matcher(pass).matches();
             paMail.matcher(email).matches();
-            String sql = "SELECT * FROM user WHERE maxacthuc=? and LOCALTIMESTAMP-ngaytao<1800";
+            String sql = "SELECT * FROM forgotpass WHERE maxacthuc=? and LOCALTIMESTAMP-ngaytao<1800 and trangthai=1";
             //13.Hệ thống truy xuất xuông  database
             PreparedStatement s = DBConnect.getPreparedStatement(sql);
             s.setString(1,maxacthuc);
@@ -69,31 +69,25 @@ public class ChangePass extends HttpServlet {
                 checkMatKhauCon = true;
             }
             //kiểm tra email có hợp lệ không
-            if (paMail.matcher(email).matches() == true) {
-                String sql1 = "SELECT* FROM user WHERE email =? ";
-                PreparedStatement s1 = DBConnect.getPreparedStatement(sql1);
-                s1.setString(1, email);
-                ResultSet rs1 = s1.executeQuery();
-                boolean existmail = rs1.next();
-
             if (paMail.matcher(email).matches() == false) {
                 errmail = "Email của bạn không hợp lê";
-            } else if(existmail==false) {
-                errmail ="Bạn nhập sai Email";
-            }else {
-                    checkMail = true;
-                }
+            }
                 //kiểm tra mã xác thực có đúng không
-            if(!maxacthuc.equals(rs1.getString("maxacthuc"))){
-                    errmaxacthuc="Mã xác thực sai";
-            }else  if (exist==false){
+             if (exist==false){
                     errmaxacthuc="Mã xác thực đã hết hạn";
             }else {
-                    checkMaxacnhan=true;
+                 if(!email.equals(rs.getString("email"))) {
+                     errmail ="Bạn nhập sai Email";
+                 }else {
+                     checkMail = true;
+                 }
+                 if(!maxacthuc.equals(rs.getString("maxacthuc"))){
+                     errmaxacthuc="Mã xác thực sai";
+                 }else {
+                     checkMaxacnhan = true;
+                 }
             }
-            }else {
-                errmail= "email không hợp lệ";
-            }
+
 
 
             request.setAttribute("errmatkhau", errmatkhau);
@@ -110,6 +104,10 @@ public class ChangePass extends HttpServlet {
                 ps.setString(1,pass);
                 ps.setString(2,email);
                 ps.executeUpdate();
+                query = "DELETE FROM forgotpass WHERE email=?";
+                PreparedStatement ps1 = DBConnect.getPreparedStatement(query);
+                ps1.setString(1,email);
+                ps1.executeUpdate();
                 //17. Hệ thống chuyển sang trang login
                 response.sendRedirect("BookStore/login.jsp");
             }else {//15.1. Hệ thống kiểm tra email, new password,enter a new password, verification code không hợp lệ
