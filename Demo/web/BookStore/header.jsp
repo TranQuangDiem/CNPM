@@ -62,9 +62,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="header-grid-right animated wow slideInRight" data-wow-delay=".5s">
                 <ul class="login-register">
-                    <li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="#">Login</a></li>
-<%--1. Người dùng chọn chức năng đăng nhập--%>
-                    <li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="http://localhost:8080/Demo/register">Register</a>
+                    <li><i class="glyphicon glyphicon-log-in" aria-hidden="true"></i><a href="login">Login</a></li>
+<%--Chức năng đăng nhập--%>
+                    <li><i class="glyphicon glyphicon-book" aria-hidden="true"></i><a href="register">Register</a>
                     </li>
                 </ul>
             </div>
@@ -88,7 +88,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </div>
                     <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="index.jsp" class="act">Home</a></li>
+                            <li class="active"><a href="#" class="act">Home</a></li>
                             <!-- Mega Menu -->
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories <b
@@ -115,7 +115,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     </div>
                                 </ul>
                             </li>
-                            <li><a href="mail.html">Mail Us</a></li>
+                            <li><a href="#">Mail Us</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -141,7 +141,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="header-right">
                 <div class="cart box_1">
-                    <a href="checkout.html">
+                    <a href="#">
                         <i class="glyphicon glyphicon-shopping-cart"></i>
                     </a>
                     <div class="clearfix"></div>

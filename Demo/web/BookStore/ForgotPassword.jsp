@@ -52,24 +52,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 %>
 <body>
 <!-- header -->
-<jsp:include page="./header.jsp"/>
+<jsp:include page="/header"/>
 <!-- //header -->
 <!-- breadcrumbs -->
-<div class="breadcrumbs">
-    <div class="container">
-        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-            <li><a href="index.jsp"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
-            <li class="active">Login Page</li>
-        </ol>
-    </div>
-</div>
+<%--<div class="breadcrumbs">--%>
+<%--    <div class="container">--%>
+<%--        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">--%>
+<%--            <li><a href="index.jsp"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>--%>
+<%--            <li class="active">Login Page</li>--%>
+<%--        </ol>--%>
+<%--    </div>--%>
+<%--</div>--%>
 <!-- //breadcrumbs -->
 <!-- login -->
 <div class="login">
     <div class="container">
         <h3 class="animated wow zoomIn" data-wow-delay=".5s">ForgotPassword</h3>
         <div class="login-form-grids animated wow slideInUp" data-wow-delay=".5s">
-            <form action="http://localhost:8080/Demo/BookStoredoForgotPass" method="post">
+            <form action="http://localhost:8080/BookStore/BookStoredoForgotPass" method="post">
                 <span>* Nhập email của tài khoản để lấy mã xác thực</span>
                 <div class="alert-danger">
                     <%=erremail == null ? "" : erremail%>
@@ -83,94 +83,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>
 <!-- //login -->
 <!-- footer -->
-<div class="footer">
-    <div class="container">
-        <div class="footer-grids">
-            <div class="col-md-3 footer-grid animated wow slideInLeft" data-wow-delay=".5s">
-                <h3>About Us</h3>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse.<span>Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit.</span></p>
-            </div>
-            <div class="col-md-3 footer-grid animated wow slideInLeft" data-wow-delay=".6s">
-                <h3>Contact Info</h3>
-                <ul>
-                    <li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>1234k Avenue, 4th block, <span>New York City.</span>
-                    </li>
-                    <li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a
-                            href="mailto:info@example.com">info@example.com</a></li>
-                    <li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>+1234 567 567</li>
-                </ul>
-            </div>
-            <div class="col-md-3 footer-grid animated wow slideInLeft" data-wow-delay=".7s">
-                <h3>Flickr Posts</h3>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(1).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(2).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(3).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(4).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(5).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(6).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(7).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(8).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(2).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(5).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(1).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(4).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="col-md-3 footer-grid animated wow slideInLeft" data-wow-delay=".8s">
-                <h3>Blog Posts</h3>
-                <div class="footer-grid-sub-grids">
-                    <div class="footer-grid-sub-grid-left">
-                        <a href="single.html"><img src="img/imgfooter%20(1).jpg" alt=" " class="img-responsive"/></a>
-                    </div>
-                    <div class="footer-grid-sub-grid-right">
-                        <h4><a href="single.html">culpa qui officia deserunt</a></h4>
-                        <p>Posted On 25/3/2016</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="footer-grid-sub-grids">
-                    <div class="footer-grid-sub-grid-left">
-                        <a href="single.html"><img src="img/imgfooter(2).jpg" alt=" " class="img-responsive"/></a>
-                    </div>
-                    <div class="footer-grid-sub-grid-right">
-                        <h4><a href="single.html">Quis autem vel eum iure</a></h4>
-                        <p>Posted On 25/3/2016</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <div class="footer-logo animated wow slideInUp" data-wow-delay=".5s">
-            <h2><a href="index.jsp">Best Store <span>shop anywhere</span></a></h2>
-        </div>
-    </div>
-</div>
 <!-- //footer -->
 </body>
 </html>

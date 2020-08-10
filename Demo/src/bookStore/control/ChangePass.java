@@ -1,4 +1,4 @@
-package bookStore.forgotPass;
+package bookStore.control;
 
 import bookStore.DBConnect;
 
@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,15 +25,15 @@ public class ChangePass extends HttpServlet {
         request.setCharacterEncoding("utf-8");
         try {
             //12.Hệ thống lấy thông tin nhập vào: email,pass,nhập lại pass,mã xác thực.
-        String email = request.getParameter("email") == null ? "" : request.getParameter("email").trim();
-        String pass = request.getParameter("pass") == null ? "" : request.getParameter("pass").trim();
-        String repass = request.getParameter("repass") == null ? "" : request.getParameter("repass").trim();
-        String maxacthuc = request.getParameter("maxacthuc") == null ? "" : request.getParameter("maxacthuc").trim();
+            String email = request.getParameter("email") == null ? "" : request.getParameter("email").trim();
+            String pass = request.getParameter("pass") == null ? "" : request.getParameter("pass").trim();
+            String repass = request.getParameter("repass") == null ? "" : request.getParameter("repass").trim();
+            String maxacthuc = request.getParameter("maxacthuc") == null ? "" : request.getParameter("maxacthuc").trim();
 
-        String errmatkhau = "";
-        String errmatkhaucon = "";
-        String errmail = "";
-        String errmaxacthuc = "";
+            String errmatkhau = "";
+            String errmatkhaucon = "";
+            String errmail = "";
+            String errmaxacthuc = "";
 
             boolean checkMatKhau = false;
             boolean checkMatKhauCon = false;
@@ -44,7 +45,7 @@ public class ChangePass extends HttpServlet {
             Pattern paMail = Pattern.compile(regexMail);
             paPass.matcher(pass).matches();
             paMail.matcher(email).matches();
-            String sql = "SELECT * FROM forgotpass WHERE maxacthuc=? and LOCALTIMESTAMP-ngaytao<1800 and trangthai=1";
+            String sql = "SELECT * FROM forgotpass WHERE maxacthuc=? and LOCALTIMESTAMP-ngaytao<1800";
             //13.Hệ thống truy xuất xuông  database
             PreparedStatement s = DBConnect.getPreparedStatement(sql);
             s.setString(1,maxacthuc);
@@ -72,20 +73,20 @@ public class ChangePass extends HttpServlet {
             if (paMail.matcher(email).matches() == false) {
                 errmail = "Email của bạn không hợp lê";
             }
-                //kiểm tra mã xác thực có đúng không
-             if (exist==false){
-                    errmaxacthuc="Mã xác thực đã hết hạn";
+            //kiểm tra mã xác thực có đúng không
+            if (exist==false){
+                errmaxacthuc="Mã xác thực đã hết hạn";
             }else {
-                 if(!email.equals(rs.getString("email"))) {
-                     errmail ="Bạn nhập sai Email";
-                 }else {
-                     checkMail = true;
-                 }
-                 if(!maxacthuc.equals(rs.getString("maxacthuc"))){
-                     errmaxacthuc="Mã xác thực sai";
-                 }else {
-                     checkMaxacnhan = true;
-                 }
+                if(!email.equals(rs.getString("email"))) {
+                    errmail ="Bạn nhập sai Email";
+                }else {
+                    checkMail = true;
+                }
+                if(!maxacthuc.equals(rs.getString("maxacthuc"))){
+                    errmaxacthuc="Mã xác thực sai";
+                }else {
+                    checkMaxacnhan = true;
+                }
             }
 
 
@@ -99,7 +100,7 @@ public class ChangePass extends HttpServlet {
             if (checkMail==true&&checkMatKhau==true&&checkMatKhauCon==true&&checkMaxacnhan==true){
 
                 //16.Hệ thống update lại pass mới vào trong database
-                String query = "UPDATE `user` SET `user`.pass=? WHERE `user`.email=?";
+                String query = "UPDATE `user` SET `user`.password=? WHERE `user`.email=?";
                 PreparedStatement ps = DBConnect.getPreparedStatement(query);
                 ps.setString(1,pass);
                 ps.setString(2,email);

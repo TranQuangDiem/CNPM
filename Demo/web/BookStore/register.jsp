@@ -19,6 +19,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
     <!-- js -->
     <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
     <!-- //js -->
     <!-- cart -->
     <script src="js/simpleCart.min.js"></script>
@@ -27,10 +28,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!-- for bootstrap working -->
     <script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script>
     <!-- //for bootstrap working -->
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
-          rel='stylesheet' type='text/css'>
-    <link href='//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic'
-          rel='stylesheet' type='text/css'>
     <!-- animation-effect -->
     <link href="css/animate.min.css" rel="stylesheet">
     <script src="js/wow.min.js"></script>
@@ -39,11 +36,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </script>
 	<link rel="stylesheet" href="../FontAwesome/css/all.css">
 	<!-- //animation-effect -->
+    <script src="js/checkForm.js"></script>
 </head>
-
 <body>
 <!-- header -->
-<jsp:include page="./header.jsp"/>
+<jsp:include page="/header"/>
 <!-- //header -->
 <!-- breadcrumbs -->
 <div class="breadcrumbs">
@@ -58,20 +55,34 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- register -->
 <div class="register">
     <div class="container">
+        <%
+            if (request.getParameter("error")!=null){
+        %>
+        <div class="alert alert-danger" role="alert">
+            <strong>Oh snap!</strong> Your email is already used!
+        </div>
+        <%
+            }
+            if (request.getParameter("info")!=null){
+        %>
+        <div class="alert alert-success" role="alert">
+            Create account success! Please check your email to active account before login!
+        </div>
+        <%
+            }
+        %>
         <h3 class="animated wow zoomIn" data-wow-delay=".5s">Register Here</h3>
         <div class="login-form-grids">
             <h5 class="animated wow slideInUp" data-wow-delay=".5s">profile information</h5>
-            <form class="animated wow slideInUp" data-wow-delay=".5s">
-                <input type="text" placeholder="Name..." required="">
-                <input type="text" placeholder="Phone number *" required="">
-<%--				<input id="sendCode-bt" type="button" value="Send code">--%>
-<%--				<input type="text" placeholder="Verification code *" required=" ">--%>
-            </form>
-            <h6 class="animated wow slideInUp" data-wow-delay=".5s">Login information</h6>
-            <form class="animated wow slideInUp" data-wow-delay=".5s">
-                <input type="email" placeholder="Email Address *" required=" ">
-                <input type="password" placeholder="Password *" required=" ">
-                <input type="password" placeholder="Password Confirmation *" required=" ">
+            <form id="register-form" name="registerForm" class="animated wow slideInUp" data-wow-delay=".5s" onsubmit="return validateForm()" method="post">
+
+                <input id="email" name="email" type="email" placeholder="Email Address *" onkeyup="validateForm()">
+                <p style="color: red; font-size: 12px" id="errorEmail"></p>
+                <input id="pass" name="pass" type="password" placeholder="Password *" onkeyup="validateForm()">
+                <p style="color: red; font-size: 12px" id="errorPassword"></p>
+                <input id="retypePass" name="retypePass" type="password" placeholder="Password Confirmation *" onkeyup="validateForm()">
+                <p style="color: red; font-size: 12px" id="errorRepass"></p>
+
                 <div class="register-check-box">
                     <div class="check">
                         <label class="checkbox"><input type="checkbox" name="checkbox"><i> </i>I accept the terms and
@@ -80,109 +91,56 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div>
                 <input type="submit" value="Register">
             </form>
-<%--            <h6 class="animated wow slideInUp" data-wow-delay=".5s">Or</h6>--%>
-<%--            <div class="animated wow slideInUp" data-wow-delay=".5s" style="padding-left: 5%">--%>
-<%--                <img src="img/google_signin_dark.png" width="40%"/>--%>
-<%--                <img src="img/facebook_signin_dark.png" width="55%"/>--%>
-<%--            </div>--%>
+            <script>
+                function validateForm() {
+//
+                    var pass = document.registerForm.pass.value;
+                    var repass = document.registerForm.retypePass.value;
+                    var email = document.registerForm.email.value;
+                    var checkbox = document.registerForm.checkbox.checked;
+                    var valid = true;
+                    //pattern định dạng email
+                    var emailPattern =/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    //pattern định dạng password: tối thiểu 8 kí tự, gồm chữ hoa, chữ thường, số và kí tự đặc biệt
+                    var passPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/
+
+                    if (!emailPattern.test(email)) {
+                        document.getElementById("errorEmail").innerHTML = "* Email is wrong";
+                        valid = false;
+                    } else {
+                        document.getElementById("errorEmail").innerHTML = "";
+                    }
+
+                    if (!passPattern.test(pass.trim())) {
+                        document.getElementById("errorPassword").innerHTML = "* Password at least 8 characters include uppercase character, lowercase character, special character, number";
+                        valid = false;
+                    } else {
+                        document.getElementById("errorPassword").innerHTML = "";
+                    }
+
+                    if (repass.trim() != pass.trim()) {
+                        document.getElementById("errorRepass").innerHTML = "* Retype password must be compatible with password";
+                        valid = false;
+                    } else {
+                        document.getElementById("errorRepass").innerHTML = "";
+                    }
+
+                    if (!checkbox){
+                        valid = false;
+                    }
+
+                    return valid;
+                }
+            </script>
         </div>
         <div class="register-home animated wow slideInUp" data-wow-delay=".5s">
-            <a href="index.jsp">Home</a>
+            <a href="/">Home</a>
         </div>
     </div>
 </div>
 <!-- //register -->
 <!-- footer -->
-<div class="footer">
-    <div class="container">
-        <div class="footer-grids">
-            <div class="col-md-3 footer-grid animated wow slideInLeft" data-wow-delay=".5s">
-                <h3>About Us</h3>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse.<span>Excepteur sint occaecat cupidatat
-						non proident, sunt in culpa qui officia deserunt mollit.</span></p>
-            </div>
-            <div class="col-md-3 footer-grid animated wow slideInLeft" data-wow-delay=".6s">
-                <h3>Contact Info</h3>
-                <ul>
-                    <li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>1234k Avenue, 4th block,
-                        <span>New York City.</span>
-                    </li>
-                    <li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a
-                            href="mailto:info@example.com">info@example.com</a></li>
-                    <li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>+1234 567 567</li>
-                </ul>
-            </div>
-            <div class="col-md-3 footer-grid animated wow slideInLeft" data-wow-delay=".7s">
-                <h3>Flickr Posts</h3>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(1).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(2).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(3).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(4).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(5).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(6).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(7).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(8).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(2).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(5).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(1).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="footer-grid-left">
-                    <a href="single.html"><img src="img/footer(4).png" alt=" " class="img-responsive"/></a>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="col-md-3 footer-grid animated wow slideInLeft" data-wow-delay=".8s">
-                <h3>Blog Posts</h3>
-                <div class="footer-grid-sub-grids">
-                    <div class="footer-grid-sub-grid-left">
-                        <a href="single.html"><img src="img/imgfooter%20(1).jpg" alt=" "
-                                                   class="img-responsive"/></a>
-                    </div>
-                    <div class="footer-grid-sub-grid-right">
-                        <h4><a href="single.html">culpa qui officia deserunt</a></h4>
-                        <p>Posted On 25/3/2016</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="footer-grid-sub-grids">
-                    <div class="footer-grid-sub-grid-left">
-                        <a href="single.html"><img src="img/imgfooter(2).jpg" alt=" " class="img-responsive"/></a>
-                    </div>
-                    <div class="footer-grid-sub-grid-right">
-                        <h4><a href="single.html">Quis autem vel eum iure</a></h4>
-                        <p>Posted On 25/3/2016</p>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <div class="footer-logo animated wow slideInUp" data-wow-delay=".5s">
-            <h2><a href="index.jsp">Best Store <span>shop anywhere</span></a></h2>
-        </div>
-    </div>
-</div>
+
 <!-- //footer -->
 </body>
 </html>
