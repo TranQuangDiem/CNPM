@@ -16,7 +16,9 @@ public class ActiveAccountServlet extends HttpServlet {
         String userName = request.getParameter("userName");
         UserService userService = new UserService();
         try {
+		//11.active tài khoản
             userService.activeAccount(userName);
+		// chuyển về trang đăng nhập
             response.sendRedirect("login");
         } catch (SQLException | ClassNotFoundException ignore){
         }
