@@ -68,6 +68,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<input type="text" name="email" id="inputEmail" placeholder="email   Vd: abc@gmail.com" required=" " >
 					<input type="password" name="pass" placeholder="Password    vd:Abc123@" required=" " >
 					<div class="forgot">
+<%--					1. chuyển sang trang forget password   --%>
 						<a href="BookStore/ForgotPassword.jsp">Forgot Password?</a>
 					</div>
                     <div class="g-recaptcha" data-sitekey="6LdWoLUZAAAAAAhlHiiU9xopfxKkKy9AVCn-ZS0E"></div><input name="captcha" value="capcha" type="hidden">

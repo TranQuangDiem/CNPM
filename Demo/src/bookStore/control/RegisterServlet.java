@@ -19,15 +19,8 @@ public class RegisterServlet extends HttpServlet {
 
     //2.
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            //2.1.
-            request.getRequestDispatcher("BookStore/register.jsp").forward(request, response);
-        } else {
-            //2.2.
-            request.getRequestDispatcher("").forward(request, response);
-        }
+        //2.1.
+        request.getRequestDispatcher("BookStore/register.jsp").forward(request, response);
     }
 
     //5.
