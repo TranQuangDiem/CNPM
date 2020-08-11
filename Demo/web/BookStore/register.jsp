@@ -56,6 +56,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="register">
     <div class="container">
         <%
+            // 6.2, 5.2
             if (request.getParameter("error")!=null){
         %>
         <div class="alert alert-danger" role="alert">
@@ -63,6 +64,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
         <%
             }
+            // 9.
             if (request.getParameter("info")!=null){
         %>
         <div class="alert alert-success" role="alert">
@@ -93,17 +95,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </form>
             <script>
                 function validateForm() {
-//
+
+                    //lấy các giá trị người dùng nhập vào form
                     var pass = document.registerForm.pass.value;
                     var repass = document.registerForm.retypePass.value;
                     var email = document.registerForm.email.value;
                     var checkbox = document.registerForm.checkbox.checked;
                     var valid = true;
+
                     //pattern định dạng email
                     var emailPattern =/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                     //pattern định dạng password: tối thiểu 8 kí tự, gồm chữ hoa, chữ thường, số và kí tự đặc biệt
                     var passPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/
 
+                    //kiểm tra email
                     if (!emailPattern.test(email)) {
                         document.getElementById("errorEmail").innerHTML = "* Email is wrong";
                         valid = false;
@@ -111,6 +116,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         document.getElementById("errorEmail").innerHTML = "";
                     }
 
+                    //kiểm tra password
                     if (!passPattern.test(pass.trim())) {
                         document.getElementById("errorPassword").innerHTML = "* Password at least 8 characters include uppercase character, lowercase character, special character, number";
                         valid = false;
@@ -118,6 +124,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         document.getElementById("errorPassword").innerHTML = "";
                     }
 
+                    //kiểm tra repass có nhập giống với password
                     if (repass.trim() != pass.trim()) {
                         document.getElementById("errorRepass").innerHTML = "* Retype password must be compatible with password";
                         valid = false;
@@ -125,6 +132,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         document.getElementById("errorRepass").innerHTML = "";
                     }
 
+                    //Kiểm tra đã check hay chưa
                     if (!checkbox){
                         valid = false;
                     }
